@@ -1,15 +1,23 @@
-import styles from "./Post.module.css";
+import { useParams } from "react-router-dom";
+import "./Post.css";
+import posts from "json/posts.json";
+import PostModelo from "componentes/PostModelo";
+import ReactMarkdown from "react-markdown";
 
-export default function Post({ post }) {
+export default function Post() {
+  const params = useParams();
+  const post = posts.find((post) => {
+    return post.id === Number(params.id);
+  });
+
   return (
-    <div className={styles.post}>
-      <img
-        className={styles.capa}
-        src={`/assets/posts/${post.id}/capa.png`}
-        alt="Imagem de capa do post"
-      ></img>
-      <h2 className={styles.titulo}>{post.titulo}</h2>
-      <button className={styles.botaoLer}>Ler...</button>
-    </div>
+    <PostModelo
+      fotoCapa={`/assets/posts/${post.id}/capa.png`}
+      titulo={post.titulo}
+    >
+      <div className="post-markdown-container">
+        <ReactMarkdown>{post.texto}</ReactMarkdown>
+      </div>
+    </PostModelo>
   );
 }
